@@ -20,8 +20,8 @@ function setup() {
 
   createCanvas(window.innerWidth, window.innerHeight);
   frameRate(10);
-  for (i = 0; i < 30; i++) {
-    grid[rand_int(15) + 10][rand_int(15) + 10] = 1;
+  for (i = 0; i < 160; i++) {
+    grid[rand_int(30) + 10][rand_int(30) + 10] = 1;
   }
   noStroke();
   colorMode(HSL, 100);
@@ -42,13 +42,14 @@ function clamp(value, max) {
 function surrounding(x, y) {
   let cells = [
     grid[clamp(x - 1, width)][clamp(y - 1, height)],
-    grid[clamp(x, width)][clamp(y - 1, height)],
+    grid[clamp(x,     width)][clamp(y - 1, height)],
     grid[clamp(x + 1, width)][clamp(y - 1, height)],
-    grid[clamp(x - 1, width)][clamp(y, height)],
-    grid[clamp(x + 1, width)][clamp(y, height)],
+    grid[clamp(x - 1, width)][clamp(y,     height)],
+
+    grid[clamp(x + 1, width)][clamp(y,     height)],
     grid[clamp(x - 1, width)][clamp(y + 1, height)],
-    grid[clamp(x, width)][clamp(y + 1, height)],
-    grid[clamp(x - 1, width)][clamp(y + 1, height)],
+    grid[clamp(x,     width)][clamp(y + 1, height)],
+    grid[clamp(x + 1, width)][clamp(y + 1, height)],
   ];
   return cells.reduce((x, y) => x + y, 0);
 }
@@ -60,15 +61,17 @@ function update_life() {
     for (let x = 0; x < width; x++) {
       s = surrounding(x, y);
 
+      newGrid[x][y] = grid[x][y];
+
       if (grid[x][y] !== 0 && s < 2) {
         newGrid[x][y] = 0;
-      } else if (grid[x][y] === 0 && s === 3) {
+      } 
+      if (grid[x][y] === 0 && s === 3) {
         newGrid[x][y] = 1;
-      } else if (grid[x][y] !== 0 && s > 3) {
+      } 
+      if (grid[x][y] !== 0 && s > 3) {
         newGrid[x][y] = 0;
-      } else {
-        newGrid[x][y] = grid[x][y];
-      }
+      } 
     }
   }
   grid = Array.from(newGrid, (row) => Array.from(row));
